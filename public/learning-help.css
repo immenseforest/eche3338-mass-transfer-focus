@@ -1,0 +1,15 @@
+/* Navy interface; distinct data colours retain meaning independently of the UI accent. */
+:root{--plot-a:#63c4ff;--plot-b:#ffb36b;--plot-reference:#c4a0ff;--plot-selected:#ffe174;--success:#72d7a4;--warning:#ffcc70;--danger:#ff9090}
+body.light{--plot-a:#006da8;--plot-b:#a64b00;--plot-reference:#7450aa;--plot-selected:#875400;--success:#126b40;--warning:#805400;--danger:#b02b32}
+.diagram .accent{stroke:var(--plot-a)}.diagram .blue{stroke:var(--plot-b)}.diagram .amber{stroke:var(--plot-reference)}
+.graph-point{fill:var(--plot-a);stroke:var(--bg)}.graph-selected{fill:var(--plot-selected);stroke:var(--text);stroke-width:2}.graph-guide{stroke:var(--plot-selected);stroke-dasharray:5 5}.graph-grid{stroke:var(--line);opacity:.45}
+.correct{color:var(--success)}.error{color:var(--danger)}.tag.caution{color:var(--warning)}
+.diagram-key,.graph-key{font-size:12px;line-height:1.6;color:var(--muted);margin:8px 0}.key-a{color:var(--plot-a)}.key-b{color:var(--plot-b)}.key-reference{color:var(--plot-reference)}.key-selected{color:var(--plot-selected)}
+.learning-support details{margin:12px 0;border-top:1px solid var(--line);padding-top:12px}.learning-support summary{cursor:pointer;color:var(--accent);font-weight:600}.learning-support details p{margin-top:14px}.learning-support .steps{margin-top:16px}.learning-support .steps li{padding-bottom:20px}.explain{cursor:help;text-decoration:underline dotted var(--muted);text-underline-offset:5px}.explain:focus-visible,.unit-tip:focus-visible,.math-symbol:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.split .card.stick:has(.diagram-key){display:block}.split .card.stick:has(.diagram-key) .diagram{max-height:340px}.diagram-key{margin-bottom:20px}
+/* One tooltip shared by equations, legacy labels, chart axes and prose. */
+#math-tooltip{position:fixed;inset:auto;max-width:min(390px,calc(100vw - 24px));width:max-content;padding:12px 15px;border:1px solid var(--accent);border-radius:8px;font:14px/1.6 'Segoe UI',sans-serif;z-index:1000;pointer-events:none;overflow-wrap:anywhere;box-shadow:0 6px 24px #0008;max-height:calc(100dvh - 24px);overflow:auto}
+.symbol:hover::after,.symbol:focus::after{display:none!important}
+.creator-line,.study-open .creator-line{font-size:10px;padding:12px 24px;border:0;border-top:1px solid var(--line);line-height:1.6;color:var(--muted)}
+@media(min-width:761px){.study-open .study-layout{height:calc(100dvh - 118px)}}
+@media print{#math-tooltip{display:none!important}.creator-line{font-size:8pt}.explain{text-decoration:none}}

@@ -28,11 +28,49 @@ const mathDefinitions={
  M:'M with an overbar: mixture-average molecular weight.',
  star:'The star marks a composition in equilibrium with the other phase. In the wetted-tube example, it is the saturation ceiling.'
 };
+Object.assign(mathDefinitions,{
+ varw:'w: mass fraction. Mass of one component divided by total mixture mass; dimensionless.',
+ vary:'y: gas-phase mole fraction. Moles of the named component divided by total gas moles; dimensionless.',
+ varx:'x: liquid-phase mole fraction. Moles of the named component divided by total liquid moles; dimensionless.',
+ varc:'c: total molar concentration, amount of substance per volume. With a species subscript, c A means concentration of that species.',
+ varP:'P: total pressure. Match its units to the gas constant or correlation; kPa and Pa differ by a factor of 1000.',
+ varR:'R: universal gas constant. Its numerical value depends on the pressure, volume and mole units used.',
+ varT:'T: absolute temperature in kelvin. Convert degrees Celsius by adding 273.15.',
+ varM:'M: molar mass (molecular weight). With a species subscript, use that species; with a bar, use the mixture average.',
+ varu:'u: bulk flow speed, usually metres per second. It is not the molecular diffusivity.',
+ varF:'F: the molar coefficient multiplying the logarithmic driving force for stagnant carrier B here. Units: amount per area per time.',
+ vard:'d: a differential when attached to a changing variable (dy, dz, dt); diameter when used as the geometric variable d. The equation determines which.',
+ varz:'z: position along the tube or diffusion direction, in metres.',
+ varY:'Y: gas solute-to-carrier mole ratio, y/(1−y). The denominator excludes the solute.',
+ varX:'X: liquid solute-to-carrier mole ratio, x/(1−x). It differs from mole fraction x.',
+ varL:'L: liquid molar flow in the balance; subscript s specifies carrier-only flow. Check the stream definition.',
+ varN:'N: number of ideal stages in the Kremser relation; with a species subscript such as N A, total molar flux. These are different quantities.',
+ varA:'A: absorption factor Ls/(m Vs) in the stage equation; an area when explicitly labelled as a surface. As a subscript, A identifies a species.',
+ varD:'D: molecular diffusivity, area per time; the subscript identifies the diffusing species pair.',
+ varr:'r: radius in spherical geometry; with a species subscript in the continuity equation, net generation per volume per time. A labelled balance residual is a separate use.',
+ vart:'t: elapsed time, usually seconds.',
+ varm:'m: equilibrium slope in y*=mx; dimensionless when both axes are mole fractions. Upright m in a unit means metre instead.',
+ varp:'p: partial pressure of a component. A species subscript identifies which component.',
+ vark:'k: individual mass-transfer coefficient. Its subscript specifies the driving-force basis; units must match that definition.',
+ varK:'K: overall transfer coefficient when used as a variable. Upright K in units means kelvin.',
+ varH:'H: Henry constant in the stated convention. In p=Hx it has pressure units.',
+ varV:'V: gas molar flow in the balance; subscript s specifies carrier-only flow.',
+ vari:'i: component or interface label, depending on the equation. In a composition sum it identifies the selected species.',
+ varj:'j: summation index over components, or row index in a spreadsheet recurrence.',
+ varJ:'J: diffusive molar flux relative to the molar-average motion of the mixture.',
+ vare:'e: base of the natural exponential, approximately 2.71828.'
+});
 function decorateMath(s){
  const tokens=[[/\\dot\{n\}_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'nA'],[/\\dot\{n\}_(?:B(?![A-Za-z0-9])|\{B\})/g,'nB'],[/\\bar\{M\}/g,'M'],[/N_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'N'],[/D_\{AB\}/g,'D'],[/y\^\*/g,'star'],[/\\mathrm\{(Re|Sc|Sh)\}/g,null],[/\\(rho|mu|delta|Delta|epsilon|tau|lambda|sigma|Omega|pi|partial|nabla|sum|int|ln)(?![A-Za-z])/g,null]];
  const held=[];
  if(typeof unitTexMap!=='undefined')s=s.replace(/\\mathrm\{((?:[^{}]|\{[^{}]*\})*)\}/g,(whole,body)=>{const key=unitTexMap[unitTexKey(body)];if(!key)return whole;held.push(`\\htmlData{unit=${key}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
  for(const [re,key] of tokens)s=s.replace(re,(whole,k)=>{let id=key||({int:'integral'}[k]||k);held.push(`\\htmlData{symbol=${id}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
+ s=s.replace(/\\begin\{array\}\{[^{}]*\}|\\(?:text|mathrm|operatorname)\{[^{}]*\}/g,whole=>{held.push(whole);return `ZZTOKEN${held.length-1}ZZ`;});
+ s=s.replace(/([_^])(ZZTOKEN\d+ZZ)/g,'$1{$2}').replace(/([_^])(?!ZZTOKEN)([A-Za-z0-9])/g,'$1{$2}');
+ s=s.replace(/ZZTOKEN\d+ZZ|\\[A-Za-z]+|[A-Za-z]+/g,word=>{
+  if(word.startsWith('ZZTOKEN')||word.startsWith('\\')||['pt','em','ex'].includes(word)||word.length>3||![...word].every(c=>mathDefinitions['var'+c]))return word;
+  return [...word].map(c=>{held.push(`\\htmlData{symbol=var${c}}{${c}}`);return `ZZTOKEN${held.length-1}ZZ`;}).join('');
+ });
  return s.replace(/ZZTOKEN(\d+)ZZ/g,(_,i)=>held[+i]);
 }
 function typesetMath(root=document.getElementById('main')){
@@ -45,18 +83,32 @@ function typesetMath(root=document.getElementById('main')){
  }
  for(const n of nodes){const re=/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g;let match,last=0,frag=document.createDocumentFragment();while((match=re.exec(n.nodeValue))){frag.append(n.nodeValue.slice(last,match.index));const e=document.createElement('span');e.className=match[2]!==undefined?'math-block':'math-inline';e.dataset.tex=match[1]??match[2];frag.append(e);last=re.lastIndex;}frag.append(n.nodeValue.slice(last));n.replaceWith(frag);}
  root.querySelectorAll('[data-tex]:not([data-typeset])').forEach(el=>{el.dataset.typeset='true';try{katex.render(decorateMath(el.dataset.tex),el,{displayMode:el.classList.contains('math-block'),throwOnError:true,strict:'ignore',trust:ctx=>ctx.command==='\\htmlData',output:'htmlAndMathml'});}catch(e){el.classList.add('math-error');el.textContent=el.dataset.tex;console.error('Equation typesetting failed',e.message);}});
- root.querySelectorAll('[data-symbol]:not([tabindex])').forEach(el=>{const d=mathDefinitions[el.dataset.symbol];if(d){el.tabIndex=0;el.classList.add('math-symbol');el.setAttribute('aria-label',d);el.dataset.tip=d;}});
+ // Some compound units are split across KaTeX atoms; label each upright unit too.
+ root.querySelectorAll('.katex-html .mathrm').forEach(el=>{
+  if(el.closest('[data-unit],[data-symbol]'))return;
+  const key=unitTexMap[unitTexKey(el.textContent)]||({m:'m',s:'s',K:'K',mol:'mol',kmol:'kmol',kg:'kg',g:'g',kPa:'kPa',Pa:'Pa'}[el.textContent]);
+  if(key){el.dataset.unit=key;}
+ });
+ root.querySelectorAll('abbr[title]').forEach(el=>{el.dataset.tip=el.title;el.removeAttribute('title');el.tabIndex=0;});
+ root.querySelectorAll('.symbol[data-tip]').forEach(el=>{el.tabIndex=0;});
+ root.querySelectorAll('[data-symbol]:not([tabindex])').forEach(el=>{let d=mathDefinitions[el.dataset.symbol];const expression=el.closest('[data-tex]')?.dataset.tex||'';
+  if(el.dataset.symbol==='varm'&&/m_\{\\mathrm\{(?:CO|N|total)/.test(expression))d='m: mass of the labelled component or total mixture, in the mass units shown. Here m is mass, not an equilibrium slope.';
+  if(el.dataset.symbol==='vari'&&/w_i|y_iM_i/.test(expression))d='i: the component being examined in this composition formula. The sum over j includes every component.';
+  if(d){el.tabIndex=0;el.classList.add('math-symbol');el.setAttribute('aria-label',d);el.dataset.tip=d;}});
  root.querySelectorAll('[data-unit]:not([tabindex])').forEach(el=>{const d=unitDefinitions[el.dataset.unit]?.[1];if(d){el.tabIndex=0;el.classList.add('math-symbol','unit-tip');el.setAttribute('aria-label',d);el.dataset.tip=d;}});
 }
-let mathTip;
-function showMathTip(el){if(!el)return;if(!mathTip){mathTip=document.createElement('div');mathTip.id='math-tooltip';mathTip.setAttribute('role','tooltip');document.body.append(mathTip);}mathTip.textContent=el.dataset.tip;mathTip.hidden=false;el.setAttribute('aria-describedby','math-tooltip');}
-function hideMathTip(){if(mathTip)mathTip.hidden=true;}
-document.addEventListener('mouseover',e=>{const el=e.target.closest('.math-symbol');if(el)showMathTip(el);});
-document.addEventListener('mouseout',e=>{if(e.target.closest('.math-symbol'))hideMathTip();});
-document.addEventListener('focusin',e=>{if(e.target.matches('.math-symbol'))showMathTip(e.target);});
-document.addEventListener('focusout',hideMathTip);
-document.addEventListener('click',e=>{const el=e.target.closest('.math-symbol');if(el){el.focus();showMathTip(el);}else hideMathTip();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')hideMathTip();});
-window.addEventListener('hashchange',hideMathTip);
+let mathTip,mathTipAnchor,mathTipPinned=false;
+const tipTarget=e=>e?.closest?.('[data-tip],abbr[title]');
+function positionMathTip(el,point){if(!mathTip||mathTip.hidden)return;const rect=el.getBoundingClientRect(),x=point?.clientX??(rect.left+rect.width/2),y=point?.clientY??rect.top;const w=mathTip.offsetWidth,h=mathTip.offsetHeight;mathTip.style.left=Math.max(12,Math.min(innerWidth-w-12,x-w/2))+'px';mathTip.style.top=Math.max(12,y-h-16>=12?y-h-16:Math.min(innerHeight-h-12,(point?.clientY??rect.bottom)+20))+'px';}
+function showMathTip(el,point){if(!el)return;if(!mathTip){mathTip=document.createElement('div');mathTip.id='math-tooltip';mathTip.setAttribute('role','tooltip');document.body.append(mathTip);}if(mathTipAnchor&&mathTipAnchor!==el)mathTipAnchor.removeAttribute('aria-describedby');mathTipAnchor=el;mathTip.textContent=el.dataset.tip||el.getAttribute('title');mathTip.hidden=false;el.setAttribute('aria-describedby','math-tooltip');positionMathTip(el,point);}
+function hideMathTip(){if(mathTip)mathTip.hidden=true;if(mathTipAnchor)mathTipAnchor.removeAttribute('aria-describedby');mathTipAnchor=null;mathTipPinned=false;}
+document.addEventListener('pointerover',e=>{const el=tipTarget(e.target);if(el&&!mathTipPinned)showMathTip(el,e);});
+document.addEventListener('pointermove',e=>{if(mathTipAnchor&&!mathTipPinned&&tipTarget(e.target)===mathTipAnchor)positionMathTip(mathTipAnchor,e);});
+document.addEventListener('pointerout',e=>{if(!mathTipPinned&&tipTarget(e.target)&&tipTarget(e.relatedTarget)!==mathTipAnchor)hideMathTip();});
+document.addEventListener('focusin',e=>{const el=tipTarget(e.target);if(el)showMathTip(el);});
+document.addEventListener('focusout',()=>{if(!mathTipPinned)hideMathTip();});
+document.addEventListener('click',e=>{const el=tipTarget(e.target);if(el){if(mathTipPinned&&mathTipAnchor===el){hideMathTip();return;}showMathTip(el,e.detail?e:undefined);mathTipPinned=true;}else hideMathTip();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideMathTip();if(['Enter',' '].includes(e.key)&&tipTarget(e.target)&&!e.target.closest('button,a,input,select,textarea')){e.preventDefault();showMathTip(tipTarget(e.target));mathTipPinned=true;}});
+window.addEventListener('hashchange',hideMathTip);window.addEventListener('resize',hideMathTip);document.addEventListener('scroll',()=>{if(!mathTipAnchor)return;const r=mathTipAnchor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)hideMathTip();else positionMathTip(mathTipAnchor);},true);
 let mathPending=false;
 new MutationObserver(()=>{if(!mathPending){mathPending=true;queueMicrotask(()=>{mathPending=false;typesetMath();});}}).observe(document.getElementById('main'),{childList:true,subtree:true});
