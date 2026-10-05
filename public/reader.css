@@ -7,5 +7,10 @@ header{flex-wrap:wrap;gap:8px}header>div{display:flex;align-items:center;flex-wr
 @media(max-width:1100px){.study-open .study-layout{grid-template-columns:minmax(310px,1fr) minmax(380px,1.3fr)}.reader-panes{grid-template-columns:1fr}.reader-tabs{display:flex;gap:6px;margin-top:8px}.reader-tabs button{font-size:12px;padding:5px 10px}.reader-pane[data-reader-pane=notes]{display:none}.reader-panes[data-mobile-pane=notes] .reader-pane[data-reader-pane=book]{display:none}.reader-panes[data-mobile-pane=notes] .reader-pane[data-reader-pane=notes]{display:flex}.reader-pane+.reader-pane{border:0}}
 @media(max-width:760px){.creator-line{padding:10px 20px}.study-open .study-layout{display:flex;flex-direction:column;height:auto}.study-open main{max-height:55dvh;min-height:220px;width:100%}#studyDock{height:85dvh;border-top:1px solid var(--line);border-left:0}.study-open header{position:sticky;top:0;background:var(--bg);z-index:4}.reader-launch{width:auto}.study-open .creator-line{font-size:11px}.presence{font-size:11px}.reader-scroll{padding:8px}}
 .tag.high{border-color:var(--line)}
+/* Invert rendered PDF pages only; photographs and the original files keep their colours. */
+body:not(.light) .reader-scroll canvas{filter:invert(.92) hue-rotate(180deg)}
+.reader-scroll{background:var(--bg)}
+.reader-scroll details{color:var(--text)}
+@media print{body:not(.light) .reader-scroll canvas{filter:none}}
 @media(min-width:761px){.study-open .study-layout{grid-template-rows:minmax(0,1fr)}.study-open main{height:100%;margin:0}}
 @media print{.creator-line{padding:6px 0}#studyDock,.presence{display:none!important}.study-open .study-layout{display:block;height:auto}.study-open main{max-height:none;height:auto;overflow:visible}}
