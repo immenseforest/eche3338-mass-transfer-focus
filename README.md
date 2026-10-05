@@ -2,7 +2,7 @@
 
 [Open the study app](https://eche3338-mass-transfer-focus.handofmidas42.chatgpt.site) · [Source prompt and credits](https://eche3338-mass-transfer-focus.handofmidas42.chatgpt.site/#source)
 
-Made by [handofmidas42](https://github.com/immenseforest) using Codex, publicly available textbook material, and course materials developed by Professor S. Elyasi at Lakehead University.
+Made by [handofmidas42](https://github.com/immenseforest) using Codex, publicly available textbook material, and course materials developed by Dr. S Elyasi at Lakehead University.
 
 An English-language study application for Chapters 1–3: diffusion, convective mass transfer and interphase transfer. It includes guided lessons, a classroom tube derivation, dynamic graphs, original practice questions, an Excel equation map, readable mathematical notation and unit definitions. Default navy dark mode uses high-contrast blue accents.
 
@@ -10,7 +10,7 @@ The comparison reader displays a lesson, textbook page and original note togethe
 
 ## Credits
 
-- [Professor Siamak Elyasi, Lakehead University](https://www.lakeheadu.ca/users/E/selyasi): course outline, teaching materials, classroom examples and the supplied teaching model.
+- [Dr. S Elyasi, Lakehead University](https://www.lakeheadu.ca/users/E/selyasi): course outline, teaching materials, classroom examples and the supplied teaching model.
 - Jaime Benítez, *Principles and Modern Applications of Mass Transfer Operations*, second edition (Wiley, 2009) and third edition (Wiley, 2017).
 - Robert E. Treybal, *Mass-Transfer Operations*, third edition: supplementary extracts and problems supplied with the course.
 - KaTeX, PDF.js and Tesseract.js: mathematical typography, PDF reading and image text recognition. Their licences are retained under `public/vendor/`.
