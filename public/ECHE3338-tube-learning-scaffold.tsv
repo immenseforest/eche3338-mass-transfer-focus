@@ -1,0 +1,27 @@
+Parameter	Value
+P · kPa	101
+T · K	313
+R · kPa m³/(kmol K)	8.314462618
+Tube d · m	0.1
+Inlet speed u0 · m/s	1
+Viscosity μ · Pa s	0.00001907
+Reference PD · m² Pa/s	0.845
+Reference T · K	298
+Wall y*	0.351
+Target / saturation	0.5
+Row height Δz · m	0.005
+Air MW · kg/kmol	29
+Methanol MW · kg/kmol	32
+	
+c · kmol/m³	=B2/(B4*B3)
+D · m²/s	=B8*(B3/B9)^1.5/(B2*1000)
+Flow area · m²	=PI()*B5^2/4
+Dry-air rate · kmol/s	=B16*B18*B6
+Target y	=B10*B11
+	
+	
+	
+z · m	nA · kmol/s	Bulk y	Mean MW	ρ · kg/m³	u · m/s	Re	Sc	Sh	F · kmol/(m² s)	Log driving force	NA · kmol/(m² s)	Wall area · m²	Added A · kmol/s	Validity	Carrier residual · kmol/s
+0	0	=B25/($B$19+B25)	=$B$13*(1-C25)+$B$14*C25	=$B$16*D25	=$B$6/(1-C25)	=E25*F25*$B$5/$B$7	=$B$7/(E25*$B$17)	=0.023*G25^0.8*H25^0.3	=I25*$B$16*$B$17/$B$5	=LN((1-C25)/(1-$B$10))	=J25*K25	=PI()*$B$5*$B$12	=L25*M25	=IF(G25<=5000,"Re invalid",IF(C25>=$B$10,"STOP saturation",IF(C25>=$B$20,"TARGET","OK")))	=($B$19+B25)*(1-C25)-$B$19
+=A25+$B$12	=B25+N25	=B26/($B$19+B26)	=$B$13*(1-C26)+$B$14*C26	=$B$16*D26	=$B$6/(1-C26)	=E26*F26*$B$5/$B$7	=$B$7/(E26*$B$17)	=0.023*G26^0.8*H26^0.3	=I26*$B$16*$B$17/$B$5	=LN((1-C26)/(1-$B$10))	=J26*K26	=PI()*$B$5*$B$12	=L26*M26	=IF(G26<=5000,"Re invalid",IF(C26>=$B$10,"STOP saturation",IF(C26>=$B$20,"TARGET","OK")))	=($B$19+B26)*(1-C26)-$B$19
+=A26+$B$12	=B26+N26	=B27/($B$19+B27)	=$B$13*(1-C27)+$B$14*C27	=$B$16*D27	=$B$6/(1-C27)	=E27*F27*$B$5/$B$7	=$B$7/(E27*$B$17)	=0.023*G27^0.8*H27^0.3	=I27*$B$16*$B$17/$B$5	=LN((1-C27)/(1-$B$10))	=J27*K27	=PI()*$B$5*$B$12	=L27*M27	=IF(G27<=5000,"Re invalid",IF(C27>=$B$10,"STOP saturation",IF(C27>=$B$20,"TARGET","OK")))	=($B$19+B27)*(1-C27)-$B$19

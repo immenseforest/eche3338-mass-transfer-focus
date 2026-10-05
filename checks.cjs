@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');const MT=require('./public/core.js');
+const near=(a,b,t=1e-7)=>assert.ok(Math.abs(a-b)<t,`${a} differs from ${b}`);
+const gas={P:101325,T:300,D:2e-5,delta:.002,y1:.2,y2:.02};let r=MT.diffusion(gas);near(r.equimolar,.07311957824957295);near(r.stagnant,.08243860512583534);near(MT.diffusion({...gas,y1:.02,y2:.2}).stagnant,-r.stagnant);near(MT.diffusion({...gas,y1:.2,y2:.2}).stagnant,0);near(MT.diffusion({...gas,delta:.004}).stagnant,r.stagnant/2);assert.throws(()=>MT.diffusion({...gas,delta:0}));assert.throws(()=>MT.diffusion({...gas,y1:1}));
+r=MT.resistance({ky:.02,kx:.04,m:2,yg:.1,xl:.01});near(r.Ky,.01);near(r.flux,.0008);near(r.yi,2*r.xi);near(r.flux,.02*(.1-r.yi));near(r.flux,.04*(r.xi-.01));near(r.gas+r.liquid,1);
+near(MT.stages({A:1,N:3}),.25);near(MT.stages({A:2,N:3}),1/15);assert.throws(()=>MT.stages({A:2,N:1.5}));
+let low=MT.convection({rho:1.2,u:.1,d:.05,mu:1.8e-5,D:2e-5,c:40});assert.equal(low.valid,false);assert.equal(MT.convection({...{rho:1.2,u:10,d:.05,mu:1.8e-5,D:2e-5,c:40},model:'gas'}).valid,true);
+near(MT.tube({fraction:.5,model:'slide'}).length,.5506530756,1e-8);near(MT.tube({fraction:.5,model:'consistent'}).length,5.7721524665,1e-8);assert.ok(MT.tube({fraction:.99}).length>MT.tube({fraction:.9}).length);assert.throws(()=>MT.tube({fraction:1}));
+const context={window:{},localStorage:{getItem:()=>null},document:{getElementById:()=>({})},console,MT};vm.createContext(context);for(const f of ['data.js','views.js','case.js']){if(f==='views.js')context.COURSE=context.window.COURSE;vm.runInContext(fs.readFileSync('public/'+f,'utf8'),context)}
+const table=vm.runInContext('excelText()',context).split('\n').map(r=>r.split('\t'));assert.equal(table[1][1],'101');assert.equal(table[13][1],'32');assert.equal(table[15][1],'=B2/(B4*B3)');assert.equal(table[23][0],'z · m');assert.equal(table[24][2],'=B25/($B$19+B25)');assert.equal(table[25][0],'=A25+$B$12');assert.equal(table[26][1],'=B26+N26');
+const exact=MT.tube({model:'consistent'}).length,e1=vm.runInContext('euler(.01)',context),e2=vm.runInContext('euler(.005)',context);assert.ok(Math.abs(e2.length-exact)<Math.abs(e1.length-exact));
+const p=vm.runInContext('caseProps(.10)',context);near((p.nb+p.na)*.9,p.nb,1e-12);assert.ok(p.valid);
+for(const l of context.COURSE.lessons){assert.ok(l.steps.length>=4);assert.ok(l.page>=1&&l.page<=220)}for(const q of context.COURSE.questions){assert.ok(q[3]>=0&&q[3]<q[2].length)}
+fs.writeFileSync('public/ECHE3338-tube-learning-scaffold.tsv',vm.runInContext('excelText()',context));
+console.log('PASS: numerical reference cases, conservation, sign/limit checks, validation, correlation ranges, slide replay, integration, Euler convergence, Excel cell references, lesson/quiz integrity.');console.log({lessons:context.COURSE.lessons.length,questions:context.COURSE.questions.length,euler005:e2.length,integral:exact});

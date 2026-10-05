@@ -1,0 +1,6 @@
+{
+  "name": "eche3338-mass-transfer-focus",
+  "private": true,
+  "scripts": {"build": "node build.cjs", "db:generate": "drizzle-kit generate", "test": "node checks.cjs"},
+  "devDependencies": {"drizzle-kit": "0.31.10", "drizzle-orm": "0.45.2"}
+}

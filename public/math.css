@@ -1,0 +1,21 @@
+/* Typeset mathematics: generous spacing, coherent notation, local fonts. */
+.grid>* ,article,section,.result{min-width:0}
+.equation{font:inherit;line-height:1.6;padding:24px 16px;margin:20px 0;text-align:left;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--bg)}
+.math-block{display:block;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:18px 5px;font-size:1.13rem;line-height:normal;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.math-block .katex-display{margin:0;text-align:left}
+.math-block .katex-display>.katex{display:block;text-align:left;width:max-content;min-width:100%;padding:4px 2px}
+.equation>.math-block{padding:4px 2px;font-size:1.17rem}
+.math-inline{display:inline-block;max-width:100%;vertical-align:baseline}
+.katex{position:relative}
+.skip:not(:focus){width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%)}
+.math-inline .katex{font-size:1.12em}
+.steps p{line-height:1.95}.steps .math-block{margin:12px 0;padding:18px 12px;background:var(--bg);border-radius:8px}
+.units{font-family:inherit;line-height:1.6}.units .math-block{font-size:.96rem;padding:14px 3px;color:var(--blue)}
+.katex .math-symbol{cursor:help;border-bottom:1px dotted var(--accent)}
+.math-symbol:hover,.math-symbol:focus{color:var(--accent);outline:none;background:var(--surface2)}
+#math-tooltip{position:fixed;bottom:22px;left:max(20px,25vw);right:20px;z-index:30;max-width:760px;padding:18px 22px;background:var(--surface2);border:1px solid var(--accent);border-radius:10px;color:var(--text);font:16px/1.6 'Segoe UI',sans-serif;box-shadow:0 10px 40px #0008;pointer-events:none}
+#math-tooltip[hidden]{display:none}.math-error{color:var(--red)}
+.excel-relations{table-layout:fixed}.excel-relations th:first-child{width:9%}.excel-relations th:nth-child(2){width:54%}.excel-relations td{padding:20px 12px}.excel-relations .math-block{font-size:1rem;padding:12px 0 18px}.excel-relations code{display:block;white-space:pre-wrap;background:var(--bg);padding:12px;border-radius:6px;line-height:1.7}.quantity-definitions{font-size:14px;color:var(--muted);line-height:1.8;margin:10px 0}.quantity-definitions strong{color:var(--text)}.math-note{color:var(--muted);font-size:13px}
+@media(min-width:761px) and (max-width:1500px){.split .grid.two{grid-template-columns:1fr}.split .stick{position:static}.split .card.stick{display:grid;grid-template-columns:minmax(200px,.8fr) minmax(0,1fr);column-gap:24px;align-items:center}.split .card.stick .units{grid-column:1/-1}.split .card.stick .diagram{max-height:270px}}
+@media(max-width:760px){.equation{padding:18px 10px}.math-block,.equation>.math-block{font-size:1.02rem}.steps .math-block{padding:16px 8px}.excel-relations{min-width:0}.excel-relations thead{display:none}.excel-relations tr{display:block;border-bottom:1px solid var(--line);padding:14px 0}.excel-relations th{display:none}.excel-relations td{display:block;border:0;padding:5px 0;width:auto}.excel-relations td:first-child{color:var(--accent);font-weight:700}.excel-relations code:before{content:'Excel formula\A';white-space:pre;color:var(--muted);font:12px 'Segoe UI',sans-serif}.units .math-block{font-size:.88rem}#math-tooltip{left:16px;right:16px;bottom:16px;font-size:14px}}
+@media print{.math-block{overflow:visible;font-size:11pt;break-inside:avoid}.equation>.math-block{font-size:12pt}.katex .math-symbol{border:0}.math-symbol{color:inherit!important}#math-tooltip{display:none!important}.excel-relations{table-layout:auto}.excel-relations tr{break-inside:avoid}.equation{border-left:2px solid #333;background:white}.steps .math-block{background:white}}

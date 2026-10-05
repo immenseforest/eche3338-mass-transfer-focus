@@ -1,0 +1,31 @@
+const unitDefinitions={
+ m:['m','Metre: length. Used for tube diameter, tube height and film thickness.'],mm:['mm','Millimetre: one thousandth of a metre.'],cm:['cm','Centimetre: one hundredth of a metre.'],m2:['m^2','Square metre: area. Wall area and circular flow area are different surfaces.'],cm2:['cm^2','Square centimetre: area; 1 cm² = 0.0001 m².'],m3:['m^3','Cubic metre: volume.'],s:['s','Second: time.'],K:['K','Kelvin: absolute temperature. Use kelvin in gas laws and temperature ratios; K = °C + 273.15.'],C:['{}^\\circ C','Degree Celsius: temperature relative to the Celsius zero. Convert to kelvin before using the ideal-gas law.'],kg:['kg','Kilogram: mass.'],g:['g','Gram: 0.001 kilogram.'],mg:['mg','Milligram: 0.001 gram.'],mol:['mol','Mole: an amount of substance containing Avogadro’s number of particles.'],kmol:['kmol','Kilomole: 1000 moles. Do not mix mol and kmol without the factor of 1000.'],L:['L','Litre: volume; 0.001 m³.'],Pa:['Pa','Pascal: pressure; one newton per square metre.'],kPa:['kPa','Kilopascal: 1000 pascals. Match pressure units to the gas constant.'],atm:['atm','Standard atmosphere: 101325 Pa or 101.325 kPa.'],bar:['bar','Bar: 100000 Pa.'],mmHg:['mmHg','Millimetre of mercury: pressure. About 133.322 Pa; used by the supplied Antoine relation.'],angstrom:['\\mathring{A}','Ångström: molecular-scale length, 10⁻¹⁰ m.'],speed:['m\\,s^{-1}','Metres per second: speed. Also the units of the concentration-based transfer coefficient kc.'],diff:['m^2\\,s^{-1}','Square metres per second: diffusivity. Measures how quickly diffusion spreads over a length scale.'],cmdiff:['cm^2\\,s^{-1}','Square centimetres per second: diffusivity. Multiply by 10⁻⁴ to obtain m²/s.'],rho:['kg\\,m^{-3}','Kilograms per cubic metre: mass density, the mass in a unit volume.'],c:['mol\\,m^{-3}','Moles per cubic metre: molar concentration.'],ck:['kmol\\,m^{-3}','Kilomoles per cubic metre: molar concentration; 1 kmol/m³ = 1000 mol/m³.'],flux:['mol\\,m^{-2}\\,s^{-1}','Moles per square metre per second: molar flux, or a mole-fraction-based transfer coefficient. Multiply flux by transfer area to get mol/s.'],fluxk:['kmol\\,m^{-2}\\,s^{-1}','Kilomoles per square metre per second: molar flux or the F coefficient in this tube example. Area × flux gives kmol/s.'],flow:['mol\\,s^{-1}','Moles per second: molar flow rate. A rate is different from flux per unit area.'],flowk:['kmol\\,s^{-1}','Kilomoles per second: molar flow rate, used for carrier air and methanol.'],massflow:['kg\\,s^{-1}','Kilograms per second: mass flow rate.'],mw:['kg\\,kmol^{-1}','Kilograms per kilomole: molecular weight. Multiplying molar flow by molecular weight gives mass flow.'],gmw:['g\\,mol^{-1}','Grams per mole: molecular weight; numerically equal to kg/kmol.'],kgmol:['kg\\,mol^{-1}','Kilograms per mole: molecular weight on a mol basis. It is 1000 times smaller numerically than kg/kmol.'],viscosity:['Pa\\,s','Pascal-second: dynamic viscosity. Equivalent to kg/(m·s).'],pd:['m^2\\,Pa\\,s^{-1}','Square metre–pascal per second: the product pressure × diffusivity. Divide by pressure in Pa to recover m²/s.'],r:['kPa\\,m^3\\,kmol^{-1}\\,K^{-1}','Gas-constant units: kPa·m³ per kmol per kelvin. With P in kPa, P/(RT) returns kmol/m³.'],rmol:['Pa\\,m^3\\,mol^{-1}\\,K^{-1}','Gas-constant units: Pa·m³ per mole per kelvin. With P in Pa, P/(RT) returns mol/m³.'],ppm:['ppm','Parts per million: one part per 10⁶ parts. State the basis: mass/mass, mole/mole, or volume/volume. These are not interchangeable.'],ppb:['ppb','Parts per billion: one part per 10⁹ parts. State the composition basis.'],percent:['\\%','Percent: parts per hundred. Mole percent and mass percent describe different ratios.'],dimensionless:['1','Dimensionless: a ratio of matching units. Examples include mole fractions, Re, Sc, Sh, and logarithm arguments.']
+};
+const plainUnits={
+ 'kPa·m³/(kmol·K)':'r','Pa·m³/(mol·K)':'rmol','kPa m³/(kmol K)':'r',
+ 'kmol/(m²·s)':'fluxk','kmol/(m² s)':'fluxk','mol/(m²·s)':'flux','mol/(m² s)':'flux',
+ 'm²·Pa/s':'pd','m² Pa/s':'pd','kg/(m·s)':'viscosity','Pa·s':'viscosity','Pa s':'viscosity',
+ 'kmol/m³':'ck','mol/m³':'c','kg/m³':'rho','kg/kmol':'mw','g/mol':'gmw','kg/mol':'kgmol',
+ 'kmol/s':'flowk','mol/s':'flow','kg/s':'massflow','cm²/s':'cmdiff','m²/s':'diff','m/s':'speed',
+ 'mmHg':'mmHg','ppm':'ppm','ppb':'ppb','kPa':'kPa','Pa':'Pa','atm':'atm','bar':'bar','m²':'m2','m³':'m3','cm²':'cm2','°C':'C','Å':'angstrom'
+};
+const unitTexKey=s=>s.replace(/\\[,;! ]/g,' ').replace(/[{}]/g,'').replace(/\s+/g,' ').trim();
+const unitTexMap=Object.fromEntries(Object.entries(unitDefinitions).map(([k,v])=>[unitTexKey(v[0]),k]));
+function unitifyPlain(chunk,hold){
+ const keys=Object.keys(plainUnits).sort((a,b)=>b.length-a.length),escapeRE=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const re=new RegExp('(?<![A-Za-z])('+keys.map(escapeRE).join('|')+')(?![A-Za-z])','g');
+ chunk=chunk.replace(re,m=>hold('\\mathrm{'+unitDefinitions[plainUnits[m]][0]+'}'));
+ return chunk.replace(/\b(kmol|mol|kg|mg|mm|cm|m|s|K|L|g)\b/g,(_,u,offset,all)=>/(?:\d|·|:|in|of|are)\s*$/.test(all.slice(0,offset))?hold('\\mathrm{'+unitDefinitions[u][0]+'}'):u);
+}
+Object.assign(unitDefinitions,{
+ pressurevolume:['kPa\\,m^3','Kilopascal times cubic metre: pressure × volume, as in the ideal-gas law.'],
+ amounttemperature:['kmol\\,K','Kilomole times kelvin: amount of substance × absolute temperature.'],
+ moltemperature:['mol\\,K','Mole times kelvin: amount of substance × absolute temperature.'],
+ areatime:['m^2\\,s','Square metre times second. In the denominator of flux, it means per unit transfer area per unit time.'],
+ lengthtime:['m\\,s','Metre times second. With kg in the numerator, kg/(m·s) is dynamic viscosity.'],
+ source:['mol\\,m^{-3}\\,s^{-1}','Moles per cubic metre per second: a volumetric accumulation or generation rate.'],
+ resistance:['m^2\\,s\\,mol^{-1}','Square metre–second per mole: reciprocal of a molar transfer coefficient, used as a transfer resistance.'],
+ carrier:['kmol\\ carrier','Kilomoles of non-transferring carrier, rather than total mixture.'],
+ solute:['kmol\\ solute','Kilomoles of transferred solute, rather than carrier or total mixture.']
+});
+for(const [key,value] of Object.entries(unitDefinitions))unitTexMap[unitTexKey(value[0])]=key;
