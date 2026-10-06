@@ -1,47 +1,64 @@
-# ECHE 3338 · Mass Transfer Focus
+# ECHE 3338 — Mass Transfer Focus
 
-[Open the study app](https://eche3338-mass-transfer-focus.handofmidas42.chatgpt.site) · [Source prompt and credits](https://eche3338-mass-transfer-focus.handofmidas42.chatgpt.site/#source)
+Personal study app for Chapters 1–3 and Test 1, October 8, 2026. Default dark mode, English, no remote runtime dependencies, no AI API charges. Open `public/index.html` directly for offline use, or serve `public` on localhost. Source links and the professor's supplied HTML lab work offline with this folder intact. Progress/theme are browser-local and do not sync across devices or origins.
 
-Made by [handofmidas42](https://github.com/immenseforest) using Codex, publicly available textbook material, and course materials developed by Dr. S Elyasi at Lakehead University.
+## What is included
 
-An English-language study application for Chapters 1–3: diffusion, convective mass transfer and interphase transfer. It includes guided lessons, a classroom tube derivation, dynamic graphs, original practice questions, an Excel equation map, readable mathematical notation and unit definitions. Default navy dark mode uses high-contrast blue accents.
+- 13 guided lessons with diagrams, readable fractions, worked reasoning, unit checks and source references.
+- 18-question diagnostic with missed-question review; five-problem 90-minute rehearsal with worked solutions and timer.
+- Diffusion, coefficient, resistance and ideal-stage calculators.
+- Dedicated eight-step methanol-tube walkthrough linked to classroom photographs; four mini-apps; keyboard/touch-accessible symbol explanations.
+- Excel formula map and downloadable three-row TSV learning scaffold, plus forward-Euler convergence checks.
+- Evidence/confidence map, chapter excerpt, selected professor materials, all 22 supplied photos and original professor HTML lab.
 
-The comparison reader displays a lesson, textbook page and original note together. Full second- and third-edition textbooks are selected locally by the reader and are never uploaded by the app. Local note reading uses PDF.js and Tesseract.js with keyword matching. Files remain in the browser session.
+## Important model distinction
 
-## Credits
+The final photographed integral is implemented as a **slide replay**. It yields about 0.550653 m for y=0.1755. Its upstream constants are inconsistent. A separately labelled illustrative reconstruction uses P=101 kPa, T=313 K, d=0.1 m, inlet u=1 m/s, μ=19.07e-6 Pa·s, y*=0.351, PD reference=0.845 at 298 K, and the photographed Sh correlation. It yields about 5.772152 m. The inlet speed is an explicit assumption; neither number is certified as the intended assignment answer without the original statement. The app documents the exact discrepancies.
 
-- [Dr. S Elyasi, Lakehead University](https://www.lakeheadu.ca/users/E/selyasi): course outline, teaching materials, classroom examples and the supplied teaching model.
-- Jaime Benítez, *Principles and Modern Applications of Mass Transfer Operations*, second edition (Wiley, 2009) and third edition (Wiley, 2017).
-- Robert E. Treybal, *Mass-Transfer Operations*, third edition: supplementary extracts and problems supplied with the course.
-- KaTeX, PDF.js and Tesseract.js: mathematical typography, PDF reading and image text recognition. Their licences are retained under `public/vendor/`.
+Textbook tube correlations differ from the photo and remain separate selectable models. Correlation ranges are checked. “All content” in the outline is not a confirmed question list. October 29 is the separately named midterm. Older marking guidance is not confirmation of current Excel/notes/formula-sheet permissions.
 
-This is an independent study aid. The professor and publishers have not endorsed its AI-generated explanations or original practice questions. Public availability of a source does not grant an open licence to that source.
+## Evidence limits
 
-## Run the interface locally
+All photos were uploaded October 5. Upload times are not class dates. Image numbers and board progression establish derivation order, not a dated course timeline. IMG_2397 is absent. The annotated Chapter 1 handout has handwriting, but no author/date; no separate dated notebook scans were found. Five added workplace screenshots were reviewed (IMG_2038, IMG_2040, IMG_2094, IMG_2095, IMG_2106). The Excel guide draws on their unit-labelled reporting columns, correction/calculation tabs, flags and control chart. Original workplace images, identifiers and coefficients are not published; no company names are used.
 
-```sh
-python -m http.server 3338 --directory public
-```
+Both supplied editions are now available in the reader; the outline names second edition. The existing excerpt covers printed pp. 1–220, matching its PDF page numbers. Chapters 4 onward are parked. Preserve source restrictions; these files are for the user's personal study.
 
-Open `http://localhost:3338`. Select your own textbook PDF in **Textbooks & notes**. Local browser storage retains only study progress and theme preferences; temporary book/note files are cleared by refresh.
+## Validation
 
-The repository intentionally excludes original course PDFs, classroom photos, the supplied professor HTML model and workplace records. Source-document links and embedded course images require separately supplied assets under `public/sources/`. The reader supports local uploads without those assets; the authored lessons, equations, calculations and practice questions remain usable. The hosted study app is the complete reference interface.
+Run `node checks.cjs` from this directory for numerical cases, flux sign/zero/thickness behaviour, two-film conservation, correlation range checks, stage limits, numerical integration, Euler convergence, Excel cell references and content integrity. It regenerates the TSV scaffold. `browser-check.cjs` uses the bundled Playwright package and a localhost server to check routes, interactions, persistence, timer, downloads and responsive layouts. Browser-specific WebMCP registration is optional and feature-detected; supported-host validation is unavailable in the local test browser.
 
-## Build and checks
+## Updating with future class notes
 
-```sh
-npm ci
-node checks.cjs
-node presence-check.cjs
-npm run build
-```
+Keep this Chapters 1–3 scope until explicitly extended. Add new dated notes to the evidence map, associate their original filenames and dates with the relevant photo/topic, resolve the original tube input statement before changing the model defaults, and rerun numeric/UI checks after changes. Do not use upload time as the lecture date.
 
-The build emits static assets in `dist/client` and an ES-module Worker in `dist/server/index.js`. Local static hosting does not provide the live visitor counter; it reports unavailable instead of inventing a number.
+## Equation, interaction and notes update
 
-The hosted counter uses a D1 binding named `DB`, the generated `drizzle/` migration, and a server secret named `VISITOR_HASH_SECRET`. It counts keyed hashes of IP addresses seen within five minutes, refreshed by a heartbeat each minute while the page is visible. Raw IP addresses are not stored by the app. Expired records are deleted on the next heartbeat. Shared networks, VPNs and scripted requests limit interpretation: this counts network addresses, not people. Configure your own hosting project and secret before deploying a separate instance.
+Equations now use locally bundled KaTeX 0.16.22 with MathML, proper derivatives/integrals, and hover/focus/tap definitions for symbols and units. The Excel page pairs 21 general equations with cell formulas and quantity/unit definitions. Downloaded spreadsheet formulas are unchanged.
 
-## Numerical scope
+All four classroom mini-apps show a linked selected point. The enrichment plot keeps a fixed full-profile axis while the target changes. Graph dots support hover, focus and tap readouts. A separate real-world page explains a water/air wet-surface example with a clearly labelled dimensionless teaching model, not a process design prediction.
 
-The photographed tube integral and an illustrative reconstruction are explicitly separated because source constants are inconsistent. The slide replay gives about 0.550653 m; the separately specified reconstruction gives about 5.772152 m at the displayed target. Neither is certified as the assignment answer without the original problem statement. Correlation ranges and units must be checked.
+Match my notes reads TXT/MD/CSV, PDFs and PNG/JPEG/WebP images locally. PDF.js 4.10.38 extracts text; Tesseract.js 6.0.1 with core 6.0.0 and English data 1.0.0 performs OCR when needed. All assets are same-origin, loaded on demand. No AI API, secret key, backend or external service receives notes. Matching uses transparent course-specific terms, not semantic AI understanding or formula verification. Users can correct extracted text and rematch. Data lives only in memory for this tab session; clearing or refreshing removes it. Limits: 5 files per selection, 20 MB each, first 12 PDF pages, 60 note pages per session, 100000 stored characters per page. PDFs/images require the hosted site or a local HTTP server; direct-file offline users can paste text. Handwriting and mathematical OCR are explicitly best-effort.
 
-Guided teaching remains in Chapters 1–3. Page mapping uses the actual edition: equilibrium-stage operations begins at printed page 196 in the second edition and page 198 in the third. The consolidated source prompt is implemented in `public/provenance.js`.
+Run `node math-check.cjs` and `node extras-check.cjs` with the local server running in addition to the original checks. The latter covers changing graph markers, fixed axes, unit tooltips, text/PDF/image reading, editable matches, contextual previews, clearing, invalid-PDF recovery, phone layout and absence of third-party network requests. Vendored licenses are under dist/vendor.
+
+
+## October 5 reader and presence update
+
+App source is in `public/`. `node build.cjs` copies it to `dist/client` and emits the Sites Worker at `dist/server/index.js`. Host the app with its existing Sites project. Serve `public` locally for the study interface; the visitor counter explicitly reports unavailable without its server endpoint.
+
+The reader compares the lesson, book and original note. Second-edition printed pages use a PDF offset of +30; third-edition pages use +31. Topic mapping is edition-specific: equilibrium stages start at printed p. 196 and p. 198 respectively. Full editions can be selected locally and are not included in the public deployment. The pre-existing third-edition excerpt remains available. Guided content remains Chapters 1–3. Local note uploads are session-only and are not uploaded to a server.
+
+The production presence endpoint uses D1 (`DB`) and the secret `VISITOR_HASH_SECRET`. Every visible browser session sends one heartbeat per minute. An HMAC of the Cloudflare-provided IP address is upserted, expired entries are deleted and the last-five-minute aggregate is returned. Raw IP addresses and note contents are not stored by this feature. Shared networks, VPNs, dynamic addresses and scripted clients limit interpretation; it measures active network addresses, not people. If no new request arrives, expired database rows remain until the next heartbeat, but they cannot contribute to the active count.
+
+Schema: `db/schema.ts`; generated migration: `drizzle/`. Drizzle generates migrations; no runtime DDL. `node presence-check.cjs` verifies deduplication, expiry and failure handling. `node reader-check.cjs` checks real PDF rendering and three-pane interaction using a local server on port 3339. Hosting details follow the [Cloudflare static-assets binding documentation](https://developers.cloudflare.com/workers/static-assets/binding/) and [D1 Worker API](https://developers.cloudflare.com/d1/worker-api/).
+
+Credits: Dr. S Elyasi, Lakehead University; Jaime Benítez, *Principles and Modern Applications of Mass Transfer Operations*, second edition (Wiley, 2009) and third edition (Wiley, 2017); Robert E. Treybal, *Mass-Transfer Operations*, third edition. AI-authored app explanations are not official course statements. The source prompt is on `#source`. Public code: https://github.com/immenseforest/eche3338-mass-transfer-focus (original source documents excluded).
+
+
+## October 6 corrections and supplementary lessons
+
+The `#changelog` route documents known mistakes, how they were found, corrections and remaining uncertainty. Four screenshots in `public/images/changes` include the user-provided composition report and three actual captures of the corrected app. They contain interface content, not original workplace records or textbook pages.
+
+Each of the 13 guided lessons has an expandable alternative-perspective panel (`further-learning.js`) with publisher-verified resource links, an original comparison and its limitations, and a retrieval question. External videos have not been audited end-to-end. MIT graduate material is optional enrichment, not exam scope. Resources remain external links; no third-party video files are hosted.
+
+Equation reading paths can be toggled in lessons and the formula reference; the preference persists locally. Reader controls can collapse without a height-only PDF reload. Guided lessons retain separate scroll positions for standard and reader layouts.

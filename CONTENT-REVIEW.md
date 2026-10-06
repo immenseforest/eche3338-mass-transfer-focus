@@ -25,3 +25,9 @@ The Knudsen thresholds are textbook approximations, not universal sharp boundari
 ## Unresolved evidence
 
 The photographed tube constants are inconsistent; 0.550653 m is a replay of the final photographed integral and 5.772152 m belongs to a separately specified illustrative model. Neither is certified as the assignment result. Current test permissions and the precise intended question set remain unconfirmed. The reader does not modify original PDFs or audit visitor-uploaded notes. No blanket claim that all source materials are error-free is made.
+
+## October 6 additions
+
+Added an explicit correction register and screenshots, without treating ambiguous classroom constants as resolved. Authored alternative comparisons for all 13 topics and checked resource titles/links against LearnChemE publisher listings, NPTEL diffusion lecture 7 and MIT OpenCourseWare lecture descriptions. Added caveats for film versus axial tube balances, mole-fraction versus carrier-ratio axes, membrane versus two-film resistance, and fixed versus moving spherical boundaries. External video playback/transcripts are not fully audited.
+
+Tests cover the 13 arrow diagrams and their persistence, 13 resource panels, four loaded evidence images, reader control collapse without replacing the PDF canvas, and normal/reader scroll retention. Numeric regression and equation rendering checks pass. Browser route, mini-app, quiz and mobile checks pass; one initial navigation wait timed out in a sequential run and passed on an isolated rerun.
