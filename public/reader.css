@@ -14,3 +14,8 @@ body:not(.light) .reader-scroll canvas{filter:invert(.92) hue-rotate(180deg)}
 @media print{body:not(.light) .reader-scroll canvas{filter:none}}
 @media(min-width:761px){.study-open .study-layout{grid-template-rows:minmax(0,1fr)}.study-open main{height:100%;margin:0}}
 @media print{.creator-line{padding:6px 0}#studyDock,.presence{display:none!important}.study-open .study-layout{display:block;height:auto}.study-open main{max-height:none;height:auto;overflow:visible}}
+
+/* Explicit display rule preserves hidden state despite the presence flex styling. */
+.presence[hidden]{display:none!important}
+#presenceToggle[aria-checked="true"]{border-color:var(--accent);color:var(--accent)}
+@media print{#presenceToggle{display:none!important}}

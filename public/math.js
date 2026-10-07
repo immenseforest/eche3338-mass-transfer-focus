@@ -29,9 +29,12 @@ const mathDefinitions={
  star:'The star marks a composition in equilibrium with the other phase. In the wetted-tube example, it is the saturation ceiling.'
 };
 Object.assign(mathDefinitions,{
+ varB:'B: species B, the second component. B is the non-transferring dry-air carrier in the classroom tube model, but it may move or transfer in other models.',
  varw:'w: mass fraction. Mass of one component divided by total mixture mass; dimensionless.',
  vary:'y: gas-phase mole fraction. Moles of the named component divided by total gas moles; dimensionless.',
  varx:'x: liquid-phase mole fraction. Moles of the named component divided by total liquid moles; dimensionless.',
+ varQ:'Q: volumetric flow rate at the stated pressure and temperature; volume per unit time.',
+ varG:'G: gas carrier molar flow rate when subscripted s; amount of carrier per time.',
  varc:'c: total molar concentration, amount of substance per volume. With a species subscript, c A means concentration of that species.',
  varP:'P: total pressure. Match its units to the gas constant or correlation; kPa and Pa differ by a factor of 1000.',
  varR:'R: universal gas constant. Its numerical value depends on the pressure, volume and mole units used.',
@@ -82,12 +85,19 @@ function typesetMath(root=document.getElementById('main')){
   if(/\\[([]/.test(n.nodeValue))nodes.push(n);
  }
  for(const n of nodes){const re=/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g;let match,last=0,frag=document.createDocumentFragment();while((match=re.exec(n.nodeValue))){frag.append(n.nodeValue.slice(last,match.index));const e=document.createElement('span');e.className=match[2]!==undefined?'math-block':'math-inline';e.dataset.tex=match[1]??match[2];frag.append(e);last=re.lastIndex;}frag.append(n.nodeValue.slice(last));n.replaceWith(frag);}
- root.querySelectorAll('[data-tex]:not([data-typeset])').forEach(el=>{el.dataset.typeset='true';try{katex.render(decorateMath(el.dataset.tex),el,{displayMode:el.classList.contains('math-block'),throwOnError:true,strict:'ignore',trust:ctx=>ctx.command==='\\htmlData',output:'htmlAndMathml'});}catch(e){el.classList.add('math-error');el.textContent=el.dataset.tex;console.error('Equation typesetting failed',e.message);}});
+ root.querySelectorAll('[data-tex]:not([data-typeset])').forEach(el=>{el.dataset.typeset='true';try{katex.render(typeof formatEquationTex==='function'?formatEquationTex(decorateMath(el.dataset.tex),el.classList.contains('math-block')):decorateMath(el.dataset.tex),el,{displayMode:el.classList.contains('math-block'),throwOnError:true,strict:'ignore',trust:ctx=>ctx.command==='\\htmlData',output:'htmlAndMathml'});}catch(e){el.classList.add('math-error');el.textContent=el.dataset.tex;console.error('Equation typesetting failed',e.message);}});
  // Some compound units are split across KaTeX atoms; label each upright unit too.
  root.querySelectorAll('.katex-html .mathrm').forEach(el=>{
   if(el.closest('[data-unit],[data-symbol]'))return;
   const key=unitTexMap[unitTexKey(el.textContent)]||({m:'m',s:'s',K:'K',mol:'mol',kmol:'kmol',kg:'kg',g:'g',kPa:'kPa',Pa:'Pa'}[el.textContent]);
   if(key){el.dataset.unit=key;}
+ });
+ // Label the actual subscript glyph, including glyphs inside whole-symbol annotations.
+ root.querySelectorAll('.katex-html .msupsub .mord,sub').forEach(el=>{
+  if(el.children.length||!['A','B','AB'].includes(el.textContent))return;
+  const text=el.textContent;
+  el.dataset.tip=text==='AB'?'Subscript AB: the pair of species A and B in a binary mixture.':text==='A'?'Subscript A: species A, the component being tracked. In the classroom tube, A is methanol. This is a label, not multiplication or the absorption factor.':'Subscript B: species B, the other component. In the classroom tube B is dry air, conserved because it does not transfer or react. B can transfer in other models.';
+  el.tabIndex=0;el.classList.add('math-symbol');el.setAttribute('aria-label',el.dataset.tip);
  });
  root.querySelectorAll('abbr[title]').forEach(el=>{el.dataset.tip=el.title;el.removeAttribute('title');el.tabIndex=0;});
  root.querySelectorAll('.symbol[data-tip]').forEach(el=>{el.tabIndex=0;});
@@ -102,13 +112,13 @@ const tipTarget=e=>e?.closest?.('[data-tip],abbr[title]');
 function positionMathTip(el,point){if(!mathTip||mathTip.hidden)return;const rect=el.getBoundingClientRect(),x=point?.clientX??(rect.left+rect.width/2),y=point?.clientY??rect.top;const w=mathTip.offsetWidth,h=mathTip.offsetHeight;mathTip.style.left=Math.max(12,Math.min(innerWidth-w-12,x-w/2))+'px';mathTip.style.top=Math.max(12,y-h-16>=12?y-h-16:Math.min(innerHeight-h-12,(point?.clientY??rect.bottom)+20))+'px';}
 function showMathTip(el,point){if(!el)return;if(!mathTip){mathTip=document.createElement('div');mathTip.id='math-tooltip';mathTip.setAttribute('role','tooltip');document.body.append(mathTip);}if(mathTipAnchor&&mathTipAnchor!==el)mathTipAnchor.removeAttribute('aria-describedby');mathTipAnchor=el;mathTip.textContent=el.dataset.tip||el.getAttribute('title');mathTip.hidden=false;el.setAttribute('aria-describedby','math-tooltip');positionMathTip(el,point);}
 function hideMathTip(){if(mathTip)mathTip.hidden=true;if(mathTipAnchor)mathTipAnchor.removeAttribute('aria-describedby');mathTipAnchor=null;mathTipPinned=false;}
-document.addEventListener('pointerover',e=>{const el=tipTarget(e.target);if(el&&!mathTipPinned)showMathTip(el,e);});
-document.addEventListener('pointermove',e=>{if(mathTipAnchor&&!mathTipPinned&&tipTarget(e.target)===mathTipAnchor)positionMathTip(mathTipAnchor,e);});
+document.addEventListener('pointerover',e=>{const el=tipTarget(e.target);if(el&&(!mathTipPinned||e.pointerType==='mouse')){mathTipPinned=false;showMathTip(el,e);}});
+document.addEventListener('pointermove',e=>{const next=tipTarget(e.target);if(e.pointerType==='mouse'&&next&&next!==mathTipAnchor){mathTipPinned=false;showMathTip(next,e);}if(mathTipAnchor&&!mathTipPinned&&tipTarget(e.target)===mathTipAnchor)positionMathTip(mathTipAnchor,e);});
 document.addEventListener('pointerout',e=>{if(!mathTipPinned&&tipTarget(e.target)&&tipTarget(e.relatedTarget)!==mathTipAnchor)hideMathTip();});
 document.addEventListener('focusin',e=>{const el=tipTarget(e.target);if(el)showMathTip(el);});
 document.addEventListener('focusout',()=>{if(!mathTipPinned)hideMathTip();});
 document.addEventListener('click',e=>{const el=tipTarget(e.target);if(el){if(mathTipPinned&&mathTipAnchor===el){hideMathTip();return;}showMathTip(el,e.detail?e:undefined);mathTipPinned=true;}else hideMathTip();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')hideMathTip();if(['Enter',' '].includes(e.key)&&tipTarget(e.target)&&!e.target.closest('button,a,input,select,textarea')){e.preventDefault();showMathTip(tipTarget(e.target));mathTipPinned=true;}});
-window.addEventListener('hashchange',hideMathTip);window.addEventListener('resize',hideMathTip);document.addEventListener('scroll',()=>{if(!mathTipAnchor)return;const r=mathTipAnchor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)hideMathTip();else positionMathTip(mathTipAnchor);},true);
+window.addEventListener('hashchange',hideMathTip);window.addEventListener('resize',hideMathTip);document.addEventListener('scroll',()=>{if(mathTipAnchor?.id==='presenceToggle'){hideMathTip();return;}if(!mathTipAnchor)return;const r=mathTipAnchor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)hideMathTip();else positionMathTip(mathTipAnchor);},true);
 let mathPending=false;
-new MutationObserver(()=>{if(!mathPending){mathPending=true;queueMicrotask(()=>{mathPending=false;typesetMath();});}}).observe(document.getElementById('main'),{childList:true,subtree:true});
+new MutationObserver(()=>{if(!mathPending){mathPending=true;queueMicrotask(()=>{mathPending=false;typesetMath();if(typeof scheduleMathFit==='function')scheduleMathFit();});}}).observe(document.getElementById('main'),{childList:true,subtree:true});

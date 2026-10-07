@@ -62,3 +62,8 @@ The `#changelog` route documents known mistakes, how they were found, correction
 Each of the 13 guided lessons has an expandable alternative-perspective panel (`further-learning.js`) with publisher-verified resource links, an original comparison and its limitations, and a retrieval question. External videos have not been audited end-to-end. MIT graduate material is optional enrichment, not exam scope. Resources remain external links; no third-party video files are hosted.
 
 Equation reading paths can be toggled in lessons and the formula reference; the preference persists locally. Reader controls can collapse without a height-only PDF reload. Guided lessons retain separate scroll positions for standard and reader layouts.
+
+
+## October 7 update
+
+See [the reading update](READING-UPDATE.md) for the master practice page, restored diagrams, reading-size and equation controls, and the original Chapters 1–4 companion. Textbook files remain excluded from this repository. The public app is [Mass Transfer Focus](https://eche3338-mass-transfer-focus.handofmidas42.chatgpt.site).
