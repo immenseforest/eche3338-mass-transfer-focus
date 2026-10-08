@@ -58,3 +58,8 @@ Added three ten-step Master Practice supplements (eight exercises total): dilute
 ## October 8, 2026 · 1:10 AM EDT — readable58
 
 Corrected overuse of scientific notation. Automatic formatting preserves ordinary decimals and supplied precision (including 4.50 m). Only nonzero magnitudes below 0.001 or at least 10,000 use scientific notation, rounded to at most four mantissa decimal places without trailing-zero padding. Common constants, fractions and Reynolds values remain readable. Full-precision calculations are unchanged. Validated scale boundaries, scientific mantissas, all eight exercise pages, tooltip math and mobile layout.
+
+
+## October 8, 2026 · 1:22 AM EDT — audit59
+
+Audited three supplementary exercises; retained the conditional dilute laminar approximation, clarified normalized molecular-weight basis for K in Re(y), and distinguished graph regime guides from correlation validity. All eight conclusions include the governing integral, exercise-specific final function or inverse equation, result and limitations, numeric-origin details and hover disclaimer. Transition has no invented Sh/flux/length. Final functions were checked pointwise against the worked model and independently integrated by a fine trapezoidal sum. UI checks cover all eight conclusion cards, hover rendering, conservation, selected graph coordinates and mobile widths.
