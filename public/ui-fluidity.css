@@ -1,0 +1,12 @@
+/* Pinned controls and lightweight motion; transforms never change layout. */
+.shell>header{position:sticky;top:0;z-index:40;background:var(--bg);box-shadow:0 1px 0 var(--line)}
+body:not(.study-open) .section-jumpbar,body:not(.study-open) .master-family-tabs{top:var(--pinned-toolbar-height,60px)}
+#studyToolbar[open] .toolbar-controls{max-height:45dvh;overflow:auto;overscroll-behavior:contain}
+.reader-visibility{display:flex;gap:6px;flex-wrap:wrap;width:100%}.reader-visibility button{font-size:12px;padding:6px 9px}
+.reader-panes>.reference-hidden{display:none!important}.reader-panes[data-visible-references="1"]{grid-template-columns:minmax(0,1fr)}
+.reader-empty{padding:20px;color:var(--muted);grid-column:1/-1}.reader-empty[hidden]{display:none}
+.reader-scroll,.master-question-pane,.master-steps-pane{overscroll-behavior:contain;scrollbar-gutter:stable}
+button,summary{touch-action:manipulation}button:not(:disabled){transition:background-color 140ms ease,border-color 140ms ease,color 140ms ease,transform 100ms ease}
+@media(max-width:1100px){.reader-panes[data-visible-references="1"]:not(.show-calculation)>[data-reader-pane]:not(.reference-hidden):not(.calculation-pane){display:flex}}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+@media print{.shell>header{position:static}.reader-visibility{display:none}}
