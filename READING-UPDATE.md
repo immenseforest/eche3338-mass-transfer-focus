@@ -18,3 +18,5 @@ The master is joined by four variations: a known 4.50 m length with unknown outl
 The inverse scaling is derived for fixed properties, wall value, composition bounds and the specifically held operating variables. For a dry inlet at fixed diameter, L scales as inlet speed to the power 0.2. At fixed inlet speed, L scales as diameter to the power 1.2. Changing a different constraint changes these relations.
 
 All five exercises have sample conclusions with hover disclaimers. The master’s twelve worked derivations carry units through their numerical inputs and cancellation steps. The new exercises link back to the master and include conceptual challenges with worked logical steps.
+
+The equation enhancement preserves each original equation and earlier arithmetic. Numerical substitutions with units follow their matching relationships, keeping the numbered reasoning and expanded unit cancellation.
