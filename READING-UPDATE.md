@@ -63,3 +63,8 @@ Corrected overuse of scientific notation. Automatic formatting preserves ordinar
 ## October 8, 2026 · 1:22 AM EDT — audit59
 
 Audited three supplementary exercises; retained the conditional dilute laminar approximation, clarified normalized molecular-weight basis for K in Re(y), and distinguished graph regime guides from correlation validity. All eight conclusions include the governing integral, exercise-specific final function or inverse equation, result and limitations, numeric-origin details and hover disclaimer. Transition has no invented Sh/flux/length. Final functions were checked pointwise against the worked model and independently integrated by a fine trapezoidal sum. UI checks cover all eight conclusion cards, hover rendering, conservation, selected graph coordinates and mobile widths.
+
+
+## October 8, 2026 · 1:34 AM EDT — relations60
+
+Rendered all formulas explicitly in the eight final-origin sections. Added compact relationship tables distinguishing fixed inputs, upward/downward length effects and unsupported relationships. Physical models are unchanged; numerical and graph checks pass. Table variants respect laminar vs logarithmic transfer and missing transition closure.
