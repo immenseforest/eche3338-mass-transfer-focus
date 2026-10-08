@@ -63,12 +63,13 @@ Object.assign(mathDefinitions,{
  varJ:'J: diffusive molar flux relative to the molar-average motion of the mixture.',
  vare:'e: base of the natural exponential, approximately 2.71828.'
 });
-function decorateMath(s){
+function decorateMath(s,element){
  const tokens=[[/\\dot\{n\}_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'nA'],[/\\dot\{n\}_(?:B(?![A-Za-z0-9])|\{B\})/g,'nB'],[/\\bar\{M\}/g,'M'],[/N_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'N'],[/D_\{AB\}/g,'D'],[/y\^\*/g,'star'],[/\\mathrm\{(Re|Sc|Sh)\}/g,null],[/\\(rho|mu|delta|Delta|epsilon|tau|lambda|sigma|Omega|pi|partial|nabla|sum|int|ln)(?![A-Za-z])/g,null]];
  const held=[];
  if(typeof unitTexMap!=='undefined')s=s.replace(/\\mathrm\{((?:[^{}]|\{[^{}]*\})*)\}/g,(whole,body)=>{const key=unitTexMap[unitTexKey(body)];if(!key)return whole;held.push(`\\htmlData{unit=${key}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
  for(const [re,key] of tokens)s=s.replace(re,(whole,k)=>{let id=key||({int:'integral'}[k]||k);held.push(`\\htmlData{symbol=${id}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
  s=s.replace(/\\begin\{array\}\{[^{}]*\}|\\(?:text|mathrm|operatorname)\{[^{}]*\}/g,whole=>{held.push(whole);return `ZZTOKEN${held.length-1}ZZ`;});
+ if(typeof decorateMasterValues==='function')s=decorateMasterValues(s,element,held);
  s=s.replace(/([_^])(ZZTOKEN\d+ZZ)/g,'$1{$2}').replace(/([_^])(?!ZZTOKEN)([A-Za-z0-9])/g,'$1{$2}');
  s=s.replace(/ZZTOKEN\d+ZZ|\\[A-Za-z]+|[A-Za-z]+/g,word=>{
   if(word.startsWith('ZZTOKEN')||word.startsWith('\\')||['pt','em','ex'].includes(word)||word.length>3||![...word].every(c=>mathDefinitions['var'+c]))return word;
@@ -85,7 +86,7 @@ function typesetMath(root=document.getElementById('main')){
   if(/\\[([]/.test(n.nodeValue))nodes.push(n);
  }
  for(const n of nodes){const re=/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g;let match,last=0,frag=document.createDocumentFragment();while((match=re.exec(n.nodeValue))){frag.append(n.nodeValue.slice(last,match.index));const e=document.createElement('span');e.className=match[2]!==undefined?'math-block':'math-inline';e.dataset.tex=match[1]??match[2];frag.append(e);last=re.lastIndex;}frag.append(n.nodeValue.slice(last));n.replaceWith(frag);}
- root.querySelectorAll('[data-tex]:not([data-typeset])').forEach(el=>{el.dataset.typeset='true';try{katex.render(typeof formatEquationTex==='function'?formatEquationTex(decorateMath(el.dataset.tex),el.classList.contains('math-block')):decorateMath(el.dataset.tex),el,{displayMode:el.classList.contains('math-block'),throwOnError:true,strict:'ignore',trust:ctx=>ctx.command==='\\htmlData',output:'htmlAndMathml'});}catch(e){el.classList.add('math-error');el.textContent=el.dataset.tex;console.error('Equation typesetting failed',e.message);}});
+ root.querySelectorAll('[data-tex]:not([data-typeset])').forEach(el=>{el.dataset.typeset='true';try{katex.render(typeof formatEquationTex==='function'?formatEquationTex(decorateMath(el.dataset.tex,el),el.classList.contains('math-block')):decorateMath(el.dataset.tex,el),el,{displayMode:el.classList.contains('math-block'),throwOnError:true,strict:'ignore',trust:ctx=>ctx.command==='\\htmlData',output:'htmlAndMathml'});}catch(e){el.classList.add('math-error');el.textContent=el.dataset.tex;console.error('Equation typesetting failed',e.message);}});
  // Some compound units are split across KaTeX atoms; label each upright unit too.
  root.querySelectorAll('.katex-html .mathrm').forEach(el=>{
   if(el.closest('[data-unit],[data-symbol]'))return;
@@ -106,6 +107,7 @@ function typesetMath(root=document.getElementById('main')){
   if(el.dataset.symbol==='vari'&&/w_i|y_iM_i/.test(expression))d='i: the component being examined in this composition formula. The sum over j includes every component.';
   if(d){el.tabIndex=0;el.classList.add('math-symbol');el.setAttribute('aria-label',d);el.dataset.tip=d;}});
  root.querySelectorAll('[data-unit]:not([tabindex])').forEach(el=>{const d=unitDefinitions[el.dataset.unit]?.[1];if(d){el.tabIndex=0;el.classList.add('math-symbol','unit-tip');el.setAttribute('aria-label',d);el.dataset.tip=d;}});
+ if(typeof installMasterValueTips==='function')installMasterValueTips(root);
 }
 let mathTip,mathTipAnchor,mathTipPinned=false;
 const tipTarget=e=>e?.closest?.('[data-tip],abbr[title]');

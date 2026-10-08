@@ -1,7 +1,7 @@
 /* Keep physical units in the substituted inputs, not only in the final answer. */
 const earlierMasterDetailedWork=masterDetailedWork;
 masterDetailedWork=function(i,html){
- const b=MasterTube,s=b.state(0),o=b.state(.176),t=String.raw,v=x=>Number(x).toPrecision(7),eq=x=>math(x,true),box=document.createElement('div');box.innerHTML=earlierMasterDetailedWork(i,html);
+ const b=MasterTube,s=b.state(0),o=b.state(.176),t=String.raw,v=x=>Number(x).toPrecision(7).replace(/e([+-]?\d+)$/,String.raw`\times10^{$1}`),eq=x=>math(x,true),box=document.createElement('div');box.innerHTML=earlierMasterDetailedWork(i,html);
  const unitRows={
   1:[t`0\le y\le0.176<0.351\qquad[y]=\mathrm{1}`,t`p_{A,out}=(0.176\ \mathrm{1})(101\ \mathrm{kPa})=17.776\ \mathrm{kPa}`,t`Y_{out}=\frac{0.176\ \mathrm{1}}{1-0.176\ \mathrm{1}}=0.2135922\ \mathrm{1}`,t`w_{A,out}=\frac{(32\ \mathrm{kg\,kmol^{-1}})(0.176\ \mathrm{1})}{(32\ \mathrm{kg\,kmol^{-1}})(0.176\ \mathrm{1})+(29\ \mathrm{kg\,kmol^{-1}})(0.824\ \mathrm{1})}=0.1907342\ \mathrm{1}`],
   2:[t`c=\frac{P}{RT}=\frac{101\ \mathrm{kPa}}{(8.314462618\ \mathrm{kPa\,m^3\,kmol^{-1}\,K^{-1}})(313\ \mathrm{K})}=${v(b.c)}\ \mathrm{kmol\,m^{-3}}`,t`D_{AB}=\frac{0.845\ \mathrm{Pa\,m^2\,s^{-1}}}{101000\ \mathrm{Pa}}\left(\frac{313\ \mathrm{K}}{298\ \mathrm{K}}\right)^{1.5}=${v(b.D)}\ \mathrm{m^2\,s^{-1}}`,t`A_c=\frac{\pi(0.100\ \mathrm{m})^2}{4}=0.007853982\ \mathrm{m^2}`,t`\dot{n}_B=(${v(b.c)}\ \mathrm{kmol\,m^{-3}})(0.007853982\ \mathrm{m^2})(1.00\ \mathrm{m\,s^{-1}})=${v(b.nb)}\ \mathrm{kmol\,s^{-1}}`],

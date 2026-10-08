@@ -36,3 +36,6 @@ changelog=function(){const entry='<section class="card section"><h2>Latest updat
 
 const beforeFractionDefaultChangelog=changelog;
 changelog=function(){return '<section class="card section"><h2>Latest update · fractional units by default</h2><p><time datetime="2026-10-08T00:16:03Z">October 7, 2026 · 8:16 PM EDT (October 8 · 00:16 UTC)</time></p><p>Fractional units are the initial display for new and existing browsers. The unit toggle remains available and saves subsequent choices.</p></section>'+beforeFractionDefaultChangelog();};
+
+const beforeValueOriginChangelog=changelog;
+changelog=function(){return '<section class="card section"><h2>Latest update · value origins and introductory calculus</h2><p><time datetime="2026-10-08T00:27:46Z">October 7, 2026 · 8:27 PM EDT (October 8 · 00:27 UTC)</time></p><p>The five master exercises now explain the supplied diffusivity reference temperature (298 K), distinguish it from the operating temperature (313 K), and trace numerical values through hover, focus and tap labels. Worked steps explain small changes, quotient-rule algebra, film integration, length sums and a four-interval Simpson example. Original symbolic equations and unit-bearing substitutions remain available.</p></section>'+beforeValueOriginChangelog();};

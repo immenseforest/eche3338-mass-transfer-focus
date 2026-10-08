@@ -20,3 +20,9 @@ The inverse scaling is derived for fixed properties, wall value, composition bou
 All five exercises have sample conclusions with hover disclaimers. The master’s twelve worked derivations carry units through their numerical inputs and cancellation steps. The new exercises link back to the master and include conceptual challenges with worked logical steps.
 
 The equation enhancement preserves each original equation and earlier arithmetic. Numerical substitutions with units follow their matching relationships, keeping the numbered reasoning and expanded unit cancellation.
+
+## Numerical origins and calculus support
+
+The five master exercises distinguish given operating inputs, the supplied property-fit reference values, conversion factors and calculated quantities. The diffusivity explanation explicitly identifies 298 K as the reference temperature for the stipulated (PD) reference product and 313 K as operating temperature. It does not claim an independently verified source for the teaching fit. Numeric equation labels work with hover, focus and tap, and the original source TeX remains available in equation modes.
+
+Visible walkthroughs inside the worked answers expand the wall-film integral, slice limit, quotient rule, composition-to-length integral and an illustrative four-interval Simpson sum. Fractional units, symbolic relationships and numerical substitutions are preserved.
