@@ -1,5 +1,11 @@
 # Reading update · October 7, 2026
 
+## October 8, 2026 · 12:19 AM EDT — number presentation
+
+Mathematical notation in the hover/focus/tap explanations is rendered with KaTeX, including dotted flow symbols, compound subscripts, fractions, Unicode indices and powers. The number-format button is immediately below the text-size controls. Scientific notation is the initial setting for existing and new browsers; subsequent decimal/scientific choices are saved. Quantitative equations, prose and numerical graph labels follow this setting, while source TeX, calculation inputs, results, dates and reference identifiers remain intact. The numerical-origin lookup now selects the closest matching physical result instead of merging unrelated mantissa descriptions.
+
+Validation: 868 tooltip renderings across the five master exercises and 663 further renderings across twelve study routes; no math or script errors. Checked default selection, saved toggling, preserved reference-temperature origins, mobile page width and unchanged numerical reference tests. Production build passed. Sites project access is unavailable in the current account, so this entry does not claim a public deployment.
+
 The master practice page keeps the question beside twelve worked steps. The original tube diagram can be enlarged, every step has a locator schematic, and the target chart shows a selected endpoint. The classroom walkthrough pairs a compact source thumbnail and schematic with its explanation.
 
 Sidebar controls save compact/standard/large text, the existing font choice, and rendered/LaTeX/Excel views. Excel conversion covers supported algebra using explicit named-cell mappings. Calculus and unsupported notation link to the full Excel walkthrough. Inline symbols stay rendered for readable prose. Motion respects the system reduced-motion preference.

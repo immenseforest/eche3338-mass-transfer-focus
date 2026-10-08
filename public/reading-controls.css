@@ -17,3 +17,5 @@ button,a.button,summary{transition:background-color 140ms ease,border-color 140m
 @media(max-width:1100px){.master-family-tabs~#master-exercise-content .master-workspace{height:auto}.master-family-tabs>div{scroll-behavior:smooth}.master-family-tabs .small{display:none}}@media print{.master-family-tabs,.master-step-picker{display:none}.sample-conclusion details>*{display:block!important}}
 
 .value-origin{cursor:help;border-radius:2px}.value-origin:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.value-origin:hover{background:var(--surface2)}.katex .value-origin{border-bottom:0!important}.reference-origins,.calculus-primer{padding:12px;border:1px solid var(--line);border-radius:8px;margin:16px 0}.calculus-primer p,.reference-origins li{line-height:1.7}
+
+.number-notation-control{width:100%;font-size:11px;padding:6px 8px;text-align:left;margin:3px 0}#math-tooltip .hover-math{display:inline-block;max-width:100%;vertical-align:baseline}#math-tooltip .katex{font-size:1em;color:inherit}#math-tooltip .katex-html{pointer-events:none}.scientific-prose-number{white-space:nowrap}.scientific-prose-number .katex{font-size:1em}
