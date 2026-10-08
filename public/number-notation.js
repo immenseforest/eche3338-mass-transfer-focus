@@ -43,7 +43,7 @@ const tooltipSymbols={
  'T_ref':String.raw`T_{\mathrm{ref}}`,'y_out':String.raw`y_{\mathrm{out}}`,'y_in':String.raw`y_{\mathrm{in}}`,'y*':'y^*','d_t':'d_t','u₀':'u_0','F₀':'F_0','M̄':String.raw`\bar{M}`,'M_A':'M_A','M_B':'M_B','D_AB':'D_{AB}','N_A':'N_A','N_B':'N_B','K_y':'K_y',
  'Re':String.raw`\mathrm{Re}`,'Sc':String.raw`\mathrm{Sc}`,'Sh':String.raw`\mathrm{Sh}`,'ρ':String.raw`\rho`,'μ':String.raw`\mu`,'π':String.raw`\pi`,'η':String.raw`\eta`,'Δz':String.raw`\Delta z`,'Δy':String.raw`\Delta y`
 };
-function hoverNotationText(note){
+function hoverNotationText(note,prose=false){
  const held=[],hold=t=>{held.push('\\('+t+'\\)');return `HVTOKEN${held.length-1}HV`;};
  let s=String(note||'').replace(/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g,(_,a,b)=>hold(a??b));
  const exact=[
@@ -55,6 +55,7 @@ function hoverNotationText(note){
   ['P/(RT)',String.raw`\frac{P}{RT}`],['dz/dy',String.raw`\frac{\mathrm{d}z}{\mathrm{d}y}`],['dy/dz',String.raw`\frac{\mathrm{d}y}{\mathrm{d}z}`],['dy/ds',String.raw`\frac{\mathrm{d}y}{\mathrm{d}s}`]
  ];
  for(const [plain,tex] of exact)s=s.split(plain).join(hold(tex));
+ s=s.replace(/\b(ln|[fFq])\((y|t|0)\)/g,(_,fn,arg)=>hold(`${fn==='ln'?'\\ln':fn}(${arg})`));
  // Keep compound expressions together before extracting individual symbols.
  const compounds=[
   ['(T/T_ref)^1.5',String.raw`\left(\frac{T}{T_{\mathrm{ref}}}\right)^{1.5}`],
@@ -74,11 +75,11 @@ function hoverNotationText(note){
  const escape=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),keys=Object.keys(tooltipSymbols).sort((a,b)=>b.length-a.length);
  s=s.replace(new RegExp('(?<![A-Za-z])('+keys.map(escape).join('|')+')(?![A-Za-z])','g'),literal=>hold(tooltipSymbols[literal]));
  s=s.replace(/\b([A-Za-z])\^([+-]?[0-9]+(?:\.[0-9]+)?)/g,(_,letter,power)=>hold(`${letter}^{${power}}`));
- s=s.replace(/\b([A-Za-z])_([A-Za-z]+(?:,[A-Za-z]+)?)/g,(_,letter,sub)=>hold(`${letter}_{\\mathrm{${sub}}}`));
+ s=s.replace(/\b([A-Za-z]{1,3})_([A-Za-z]+(?:,[A-Za-z]+)?)/g,(_,letter,sub)=>hold(`${letter}_{\\mathrm{${sub}}}`));
  s=s.replace(/\b(dy|dz|ds)\b/g,word=>hold('\\mathrm{d}'+word[1]));
  s=s.replace(/\b([yxcPTFL])\b/g,letter=>hold(letter));
  s=polishMathText(s);
- if(scientificNumbers())s=s.split(/(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/g).map(part=>part.startsWith('\\(')||part.startsWith('\\[')?part:part.replace(/HVTOKEN\d+HV|\d+(?:\.\d+)?/g,(literal,offset)=>{
+ if(!prose&&scientificNumbers())s=s.split(/(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/g).map(part=>part.startsWith('\\(')||part.startsWith('\\[')?part:part.replace(/HVTOKEN\d+HV|\d+(?:\.\d+)?/g,(literal,offset)=>{
   if(literal.startsWith('HVTOKEN')||/[A-Za-z]/.test(part[offset-1]||'')||/(?:p\.|page|Chapter|chapter)\s*$/.test(part.slice(0,offset)))return literal;
   const next=part.slice(offset+literal.length).match(/^\s*HVTOKEN(\d+)HV/);if(next&&held[Number(next[1])]?.startsWith('\\(\\times10'))return Number(literal).toFixed(4).replace(/\.?0+$/,'');
   if(!isQuantitativeLiteral(literal))return literal;

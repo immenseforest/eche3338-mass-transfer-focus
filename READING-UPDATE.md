@@ -68,3 +68,7 @@ Audited three supplementary exercises; retained the conditional dilute laminar a
 ## October 8, 2026 · 1:34 AM EDT — relations60
 
 Rendered all formulas explicitly in the eight final-origin sections. Added compact relationship tables distinguishing fixed inputs, upward/downward length effects and unsupported relationships. Physical models are unchanged; numerical and graph checks pass. Table variants respect laminar vs logarithmic transfer and missing transition closure.
+
+
+## October 8, 2026 · 03:30 EDT — nested notation
+Shared prose rendering now covers recognised mathematical notation in nested explanations and table cells. Added proportionality annotation and 12pt equation row spacing. Preserves numerical models and existing local changes. Browser checks cover all eight exercises, responsive widths and hover rendering. Sites publication currently blocked by project-not-found for the connected account.

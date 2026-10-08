@@ -3,6 +3,7 @@ const mathEscape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const math=(tex,display=false)=>`<span class="${display?'math-block':'math-inline'}" data-tex="${mathEscape(tex)}"></span>`;
 const tex=String.raw;
 const mathDefinitions={
+ propto:'∝ means is proportional to. The quantity on the left equals a fixed multiplier times the whole expression on the right, while the other model inputs stay fixed. Doubling that whole expression doubles the left-hand quantity. It does not mean the multiplier is 1, or that Re doubles when y doubles. Here composition changes density and speed together; Sc falls as density rises when viscosity and diffusivity stay fixed.',
  rho:'ρ (rho): mass density of the mixture; mass per unit volume.',
  mu:'μ (mu): dynamic viscosity; resistance to shearing motion.',
  delta:'δ (lowercase delta): thickness of the diffusion film.',
@@ -64,7 +65,7 @@ Object.assign(mathDefinitions,{
  vare:'e: base of the natural exponential, approximately 2.71828.'
 });
 function decorateMath(s,element){
- const tokens=[[/\\dot\{n\}_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'nA'],[/\\dot\{n\}_(?:B(?![A-Za-z0-9])|\{B\})/g,'nB'],[/\\bar\{M\}/g,'M'],[/N_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'N'],[/D_\{AB\}/g,'D'],[/y\^\*/g,'star'],[/\\mathrm\{(Re|Sc|Sh)\}/g,null],[/\\(rho|mu|delta|Delta|epsilon|tau|lambda|sigma|Omega|pi|partial|nabla|sum|int|ln)(?![A-Za-z])/g,null]];
+ const tokens=[[/\\dot\{n\}_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'nA'],[/\\dot\{n\}_(?:B(?![A-Za-z0-9])|\{B\})/g,'nB'],[/\\bar\{M\}/g,'M'],[/N_(?:A(?![A-Za-z0-9])|\{A(?:,j)?\})/g,'N'],[/D_\{AB\}/g,'D'],[/y\^\*/g,'star'],[/\\mathrm\{(Re|Sc|Sh)\}/g,null],[/\\(rho|mu|delta|Delta|epsilon|tau|lambda|sigma|Omega|pi|partial|nabla|sum|int|ln|propto)(?![A-Za-z])/g,null]];
  const held=[];
  if(typeof unitTexMap!=='undefined')s=s.replace(/\\mathrm\{((?:[^{}]|\{[^{}]*\})*)\}/g,(whole,body)=>{const key=unitTexMap[unitTexKey(body)];if(!key)return whole;held.push(`\\htmlData{unit=${key}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
  for(const [re,key] of tokens)s=s.replace(re,(whole,k)=>{let id=key||({int:'integral'}[k]||k);held.push(`\\htmlData{symbol=${id}}{${whole}}`);return `ZZTOKEN${held.length-1}ZZ`;});
@@ -82,6 +83,8 @@ function typesetMath(root=document.getElementById('main')){
  const nodes=[];const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){return n.parentElement?.closest('.katex,[data-tex],.lessonlist,code,pre,textarea,script,style,svg,option')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
  while(walk.nextNode()){
   const n=walk.currentNode;
+  // Typeset recognised notation in explanations too; leave code, controls and source views literal.
+  if(typeof hoverNotationText==='function'&&n.parentElement.closest('p,li,td,th,dd,figcaption,.foundation-note')&&!n.parentElement.closest('button,a,summary,nav,[role=tab],.equation-source'))n.nodeValue=hoverNotationText(n.nodeValue,true);
   if(typeof polishMathText==='function'){const next=polishMathText(n.nodeValue);if(next!==n.nodeValue)n.nodeValue=next;}
   if(/\\[([]/.test(n.nodeValue))nodes.push(n);
  }
