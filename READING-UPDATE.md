@@ -53,3 +53,8 @@ General correlation-range and geometry principles were checked against the offic
 ## October 8, 2026 · 1:00 AM EDT — regimes56
 
 Added three ten-step Master Practice supplements (eight exercises total): dilute developed laminar transfer; turbulent wet inlet with standard flow conversion; and a transitional case that crosses Re 4000 but never meets the class Re > 5000 lower condition. Includes schematics, conservative velocity derivation for y < 1, Re/Sc/Sh interpretation, supported flux/integrals, numerical sums, missing-model judgments, input measurement workflow and links/challenges back to the original master. Original calculus method now leads retained explanations below its equation, with quiet disclosure controls. Scientific mantissas display seven decimal places. Existing first-five calculations and local changes remain preserved. Build and browser validation recorded separately; account access still controls public deployment.
+
+
+## October 8, 2026 · 1:10 AM EDT — readable58
+
+Corrected overuse of scientific notation. Automatic formatting preserves ordinary decimals and supplied precision (including 4.50 m). Only nonzero magnitudes below 0.001 or at least 10,000 use scientific notation, rounded to at most four mantissa decimal places without trailing-zero padding. Common constants, fractions and Reynolds values remain readable. Full-precision calculations are unchanged. Validated scale boundaries, scientific mantissas, all eight exercise pages, tooltip math and mobile layout.
