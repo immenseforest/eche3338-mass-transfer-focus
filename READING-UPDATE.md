@@ -48,3 +48,8 @@ All five exercise conclusions retain their wording, with hover/focus/tap explana
 Re and Sh equation/table annotations describe the calculation order, Sh = F d/(c D), changes in Re and Sc, why higher Sh does not independently establish larger flux or shorter equipment, and replacing the correlation if its stated conditions fail. Each exercise’s threshold inlet speed is recomputed from 5000 μ/(ρ_in d), holding the other inlet properties and geometry fixed.
 
 General correlation-range and geometry principles were checked against the official NPTEL Mass Transfer Operation 1 module 3 lecture 4: https://archive.nptel.ac.in/content/storage2/courses/103103035/module3/lec4.pdf . Its published pipe correlations use different exponents and limits; it is not cited as the source of this exercise’s stipulated 0.8/0.3 exponents or 5000 condition.
+
+
+## October 8, 2026 · 1:00 AM EDT — regimes56
+
+Added three ten-step Master Practice supplements (eight exercises total): dilute developed laminar transfer; turbulent wet inlet with standard flow conversion; and a transitional case that crosses Re 4000 but never meets the class Re > 5000 lower condition. Includes schematics, conservative velocity derivation for y < 1, Re/Sc/Sh interpretation, supported flux/integrals, numerical sums, missing-model judgments, input measurement workflow and links/challenges back to the original master. Original calculus method now leads retained explanations below its equation, with quiet disclosure controls. Scientific mantissas display seven decimal places. Existing first-five calculations and local changes remain preserved. Build and browser validation recorded separately; account access still controls public deployment.
