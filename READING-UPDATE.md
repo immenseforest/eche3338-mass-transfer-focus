@@ -1,5 +1,11 @@
 # Reading update · October 7, 2026
 
+## October 8, 2026 · 12:36 AM EDT — detailed arithmetic derivations
+
+Expandable subsections retain the title “Detailed arithmetic derivation.” All twelve master steps and all eight steps in each variation include the applicable foundations. The selected carrier-flow relation is derived from its definition in eleven explicit moves; calculus includes a small-increment proof before the quotient-rule result, the logarithm’s chain rule, antiderivative evaluation, the physical slice limit, accumulated length sums and a computed four-interval Simpson illustration. Changed-speed and diameter cases derive their inverse powers; the outlet case explains bracketing and the wet-inlet case rebuilds throughput and bounds. Optional vocabulary tips and existing textbook concept links remain beside the relevant reasoning. Demonstration numbers are marked separately from supplied operating data.
+
+Checks cover every exercise, unchanged original equation sources, rendered/LaTeX and decimal/scientific views, example-origin notes, mobile overflow, 1,039 tooltip renderings and numerical reference tests. No user changes were reset. Sites lookup still returns project not found for the current account, so this entry does not claim deployment.
+
 ## October 8, 2026 · 12:19 AM EDT — number presentation
 
 Mathematical notation in the hover/focus/tap explanations is rendered with KaTeX, including dotted flow symbols, compound subscripts, fractions, Unicode indices and powers. The number-format button is immediately below the text-size controls. Scientific notation is the initial setting for existing and new browsers; subsequent decimal/scientific choices are saved. Quantitative equations, prose and numerical graph labels follow this setting, while source TeX, calculation inputs, results, dates and reference identifiers remain intact. The numerical-origin lookup now selects the closest matching physical result instead of merging unrelated mantissa descriptions.
