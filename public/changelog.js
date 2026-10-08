@@ -33,3 +33,6 @@ changelog=function(){const entry=`<section class="card section"><h2>Latest updat
 
 const beforeSymbolRestoreChangelog=changelog;
 changelog=function(){const entry='<section class="card section"><h2>Latest update · symbolic equations restored</h2><p><time datetime="2026-10-08T00:13:50Z">October 7, 2026 · 8:13 PM EDT (October 8 · 00:13 UTC)</time></p><p>The original variable-symbol equations now precede the added unit-bearing substitutions. Numbered reasoning, earlier arithmetic and expanded unit cancellation remain available in the master derivations.</p></section>';return beforeSymbolRestoreChangelog().replace('<section class="card section"><h2>Latest update · five connected master exercises</h2>',entry+'<section class="card section"><h2>Earlier update · five connected master exercises</h2>');};
+
+const beforeFractionDefaultChangelog=changelog;
+changelog=function(){return '<section class="card section"><h2>Latest update · fractional units by default</h2><p><time datetime="2026-10-08T00:16:03Z">October 7, 2026 · 8:16 PM EDT (October 8 · 00:16 UTC)</time></p><p>Fractional units are the initial display for new and existing browsers. The unit toggle remains available and saves subsequent choices.</p></section>'+beforeFractionDefaultChangelog();};

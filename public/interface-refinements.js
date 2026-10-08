@@ -1,5 +1,8 @@
 // Presentation-only formatting. Original TeX and numerical models stay unchanged.
-let fractionalUnits=progress.fractionalUnits===true;
+// Apply the requested default once, including browsers with an older saved setting.
+// Later choices made with the unit toggle still persist between visits.
+if(progress.fractionalUnitsDefaultVersion!==1){progress.fractionalUnits=true;progress.fractionalUnitsDefaultVersion=1;saveProgress();}
+let fractionalUnits=progress.fractionalUnits!==false;
 function formatUnitBody(body){const numerator=[],denominator=[];let rest=body.replace(/([A-Za-z]+)(?:\^\{-(\d+)\}|\^-(\d+))/g,(_,name,a,b)=>{const p=+(a||b);denominator.push(name+(p===1?'':`^{${p}}`));return '';}).replace(/\\[,;!]/g,' ').trim();if(!denominator.length)return null;numerator.push(rest||'1');return `\\frac{\\mathrm{${numerator.join('\\,')}}}{\\mathrm{${denominator.join('\\,')}}}`;}
 function formatEquationTex(source,display){let s=source.replace(/0\.664/g,'\\htmlData{symbol=fitCoefficient}{0.664}');if(fractionalUnits)s=s.replace(/\\mathrm\{((?:[^{}]|\{[^{}]*\})*)\}/g,(whole,body)=>formatUnitBody(body)||whole);if(!display||/\\begin\{/.test(s))return s;let depth=0,parts=[],start=0;for(let i=0;i<s.length;i++){if(s[i]==='{')depth++;else if(s[i]==='}')depth--;else if(depth===0&&s[i]==='\\'){const m=s.slice(i).match(/^\\(?:qquad|quad)(?![A-Za-z])/);if(m){parts.push(s.slice(start,i).replace(/[,;]\s*$/,''));i+=m[0].length-1;start=i+1;}}}if(!parts.length)return s;parts.push(s.slice(start));return '\\begin{array}{l}\\displaystyle '+parts.join('\\\\[6pt]\\displaystyle ')+'\\end{array}';}
 const coefficientKeys=new Set(['varF','vark','varK','varD','D','varH','mu','fitCoefficient']);
